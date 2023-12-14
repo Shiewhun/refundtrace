@@ -4,7 +4,7 @@
         <div class="contain">
             <div class="left">
                 <h3>Online Fraud Victim?</h3>
-                <h3>Leave your details to get your money back!</h3>
+                <h3>Leave your details so we can help trace your money.</h3>
                 <p>If you’ve been ripped off by scammers, get in touch and our team of experts will work to get your money back</p>
             </div>
             <div class="right">
@@ -53,6 +53,9 @@
                   ></v-select>
                     <v-btn type="submit" :loading="this.loading" block class="mt-2">Submit</v-btn>
                 </v-form>
+                <v-snackbar v-model="showSuccessSnackbar" color="success" timeout="3000">
+          Form submitted successfully!
+        </v-snackbar>
             </div>
         </div>
     </main>
@@ -70,6 +73,7 @@ export default {
       amountLost: '',
       currency: '',
       story: '',
+      showSuccessSnackbar: false,
       rules: [
         value => {
           if (value) return true
@@ -326,25 +330,53 @@ export default {
         console.log(this.firstName, this.email, this.scamCompany, this.lastTransaction, this.amountLost, this.currency, this.story, this.thelocation)
       },
       async sendMessage() {
-        try {
-          this.loading = true
-          const reponse = await axios.post('https://gmx-v3nl.onrender.com/refundtrace'  , {
-            name: this.firstName,
-            email: this.email,
-            cname: this.scamCompany,
-            tdate: this.lastTransaction,
-            amount: this.amountLost,
-            currency: this.currency,
-            story: this.story,
-            location: this.thelocation,
-          })
-          this.reponseData = reponse.data
-          this.loading = false
-          console.log('Successful')
-        } catch (error) {
-          console.log('Error', error);
-        }
-      },
+  try {
+    this.loading = true;
+
+    const response = await axios.post('https://gmx-v3nl.onrender.com/refundtrace', {
+      name: this.firstName,
+      email: this.email,
+      cname: this.scamCompany,
+      tdate: this.lastTransaction,
+      amount: this.amountLost,
+      currency: this.currency,
+      story: this.story,
+      location: this.thelocation,
+    });
+
+    this.responseData = response.data;
+    this.loading = false;
+
+    // Clear form fields
+    this.firstName = '';
+    this.email = '';
+    this.scamCompany = '';
+    this.lastTransaction = '';
+    this.amountLost = '';
+    this.currency = '';
+    this.story = '';
+    this.thelocation = '';
+
+    // Reset validation rules
+    this.rules = [];
+    this.rules1 = [];
+    this.rules2 = [];
+    this.rules3 = [];
+    this.rules4 = [];
+    this.rules5 = [];
+    this.rules6 = [];
+    // Display success notification
+    this.showSuccessSnackbar = true;
+
+    // Display a success message (optional)
+    console.log('Form submitted successfully!');
+
+  } catch (error) {
+    console.log('Error', error);
+    // You might want to display an error message to the user here
+  }
+},
+
     }
 }
 </script>
