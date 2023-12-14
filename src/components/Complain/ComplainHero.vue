@@ -53,8 +53,8 @@
                   ></v-select>
                     <v-btn type="submit" :loading="this.loading" block class="mt-2">Submit</v-btn>
                 </v-form>
-                <v-snackbar v-model="showSuccessSnackbar" color="success" timeout="3000">
-          Form submitted successfully!
+                <v-snackbar v-model="showSuccessSnackbar" color="success" timeout="4000">
+          Form submitted successfully! We'll contact you shortly.
         </v-snackbar>
             </div>
         </div>
